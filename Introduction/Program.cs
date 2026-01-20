@@ -1,7 +1,7 @@
 ﻿using System;
 
 // See https://aka.ms/new-console-template for more information
-Console.WriteLine("ITP-236 Spring 2026 Intorduction Project");
+Console.WriteLine("ITP-236 Spring-2026 Intorduction Project");
 Console.WriteLine(new string('-', 80));
 PrintHeader();
 
