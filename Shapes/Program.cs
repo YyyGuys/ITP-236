@@ -1,10 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Shapes;
+using EID;
 Console.WriteLine("Shapes");
 
 List<Shape> shapes = new()
 {
-    new Circle("My Circle", 5.0),
+    new Circle("My Circle".Right(6), 5.0),
     new Rectangle("My Rectangle", 4.0, 6.0),
     new Square("My Square", 3.0),
     new Circle(2.5),
