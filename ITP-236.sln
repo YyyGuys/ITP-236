@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EID", "EID\EID.csproj", "{3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collection", "Collection\Collection.csproj", "{357FE36E-84A3-467D-BDC9-566BD6D26FC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LINQ1", "LINQ1\LINQ1.csproj", "{E6EEB548-4B1B-2DDA-9938-921C494B99FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{357FE36E-84A3-467D-BDC9-566BD6D26FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{357FE36E-84A3-467D-BDC9-566BD6D26FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{357FE36E-84A3-467D-BDC9-566BD6D26FC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6EEB548-4B1B-2DDA-9938-921C494B99FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6EEB548-4B1B-2DDA-9938-921C494B99FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6EEB548-4B1B-2DDA-9938-921C494B99FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6EEB548-4B1B-2DDA-9938-921C494B99FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
