@@ -13,8 +13,8 @@ namespace LINQ2
            +-------------------+------------------------+-------------------------+-----------------+
            | CustomerId (PK)   | SalesOrderId (PK)      | SalesOrderPartId (PK)   | PartId (PK)     |
            | Name              | CustomerId (FK)        | SalesOrderId (FK)       | PartName        |
-           | Email             | OrderDate              | PartId (FK)             | UnitPrice       |
-           |                   | TotalAmount            | Quantity                | Description     |
+           | Region            | OrderDate              | PartId (FK)             | UnitPrice       |
+           | City, State       | TotalAmount            | Quantity                | Description     |
            +-------------------+------------------------+-------------------------+-----------------+
         */
     public class Customer
