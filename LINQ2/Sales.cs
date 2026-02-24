@@ -24,8 +24,8 @@ namespace LINQ2
         public string Region { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public double OrderTotal => SalesOrders.Sum(so => so.OrderTotal);
-        public int BackOrdered => SalesOrders.Sum(so => so.Quantity - so.Shipped);
+        public double OrderTotal => 0;              //--< To be calculated <<<
+        public int BackOrdered => 0;                //--< To be calculated <<<
         public List<SalesOrder> SalesOrders =>
             SalesOrder.SalesOrders
             .Where(so => so.CustomerId == CustomerId).ToList();
