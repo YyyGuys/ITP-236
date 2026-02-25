@@ -63,13 +63,13 @@ namespace LINQ2
                         return 0f;
 
                     var gradePoints = new Dictionary<string, float>
-    {
-        { "A", 4.0f },
-        { "B", 3.0f },
-        { "C", 2.0f },
-        { "D", 1.0f },
-        { "F", 0.0f }
-    };
+                        {
+                            { "A", 4.0f },
+                            { "B", 3.0f },
+                            { "C", 2.0f },
+                            { "D", 1.0f },
+                            { "F", 0.0f }
+                        };
 
                     var enrollments = Rosters
                         .Join(Course.Courses,
