@@ -13,8 +13,8 @@ namespace LINQ2
            | StudentId (PK) |        | RosterId (PK)  |        | CourseId (PK)  |
            | Name           |        | StudentId (FK) |        | CourseName     |
            | GPA (TBD)      |        | CourseId (FK)  |        | Credits        |
-           |                |        | Grade          |        | Department     |
-           +----------------+--------+----------------+--------+----------------+
+           | Major          |        | Grade          |        | Department     |
+           +----------------+        +----------------+        +----------------+
 
             Student → Roster
                 - A Student can appear in the Roster many times (one entry per course).
@@ -44,6 +44,7 @@ namespace LINQ2
     {
         public int StudentId { get; set; }
         public string Name { get; set; }
+        public string Major { get; set; }
         /// <summary>
         /// Gets the list of rosters for this Student
         /// </summary>
@@ -52,16 +53,53 @@ namespace LINQ2
         /// Gets the number of enrollments in the Rosters collection.
         /// </summary>
         public int EnrollmentCount => Rosters.Count();
-        public float GPA => 0;                          //--< Rewrite to use CoPilot to calculate a Student's GPA <<<
+        public float GPA
+        {
+            get
+            {
+                {
+                    if (Rosters == null || !Rosters.Any())
+                        return 0f;
+
+                    var gradePoints = new Dictionary<string, float>
+    {
+        { "A", 4.0f },
+        { "B", 3.0f },
+        { "C", 2.0f },
+        { "D", 1.0f },
+        { "F", 0.0f }
+    };
+
+                    var enrollments = Rosters
+                        .Join(Course.Courses,
+                            roster => roster.CourseId,
+                            course => course.CourseId,
+                            (roster, course) => new
+                            {
+                                GradePoint = gradePoints.ContainsKey(roster.Grade) ? gradePoints[roster.Grade] : 0f,
+                                Credits = course.Credits
+                            })
+                        .ToList();
+
+                    if (!enrollments.Any())
+                        return 0f;
+
+                    float totalPoints = enrollments.Sum(e => e.GradePoint * e.Credits);
+                    int totalCredits = enrollments.Sum(e => e.Credits);
+
+                    return totalCredits > 0 ? totalPoints / totalCredits : 0f;
+                }
+            }
+        }//--< Rewrite to use CoPilot to calculate a Student's GPA <<<
         public Student()
         {
             Rosters = Roster.Rosters.Where(r => r.StudentId == this.StudentId).ToList();
         }
         public static List<Student> Students => new List<Student>
         {
-            new Student { StudentId = 101, Name = "Alice"},
-            new Student { StudentId = 102, Name = "Becky" },
-            new Student { StudentId = 103, Name = "Charlie"}
+            new Student { StudentId = 101, Name = "Alice", Major="Stem"},
+            new Student { StudentId = 102, Name = "Becky", Major="Stem" },
+            new Student { StudentId = 103, Name = "Charlie", Major = "History"}
         };
     }
     /// <summary>

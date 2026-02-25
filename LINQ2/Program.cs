@@ -9,16 +9,25 @@ namespace LINQ2
 {
     internal class Program
     {
+        static List<Roster> rosters = Roster.Rosters;
         static List<Student> students = Student.Students;
         static List<Course> courses = Course.Courses;
-        static List<Roster> rosters = Roster.Rosters;
 
         static List<Customer> customers = Customer.Customers;
         static List<SalesOrder> salesOrders = SalesOrder.SalesOrders;
 
         static void Main(string[] args)
         {
-            SchoolExamples();
+            //SchoolExamples();
+            //var gpas = students.GroupBy(s => s.Major);
+            //foreach (var gpa in gpas)
+            //{
+            //    Console.WriteLine($"Major: {gpa.Key}");
+            //    foreach (var student in gpa)
+            //    {
+            //        Console.WriteLine($"\t{student.Name} - GPA: {student.GPA}");
+            //    }
+            //}
             SalesExamples();
 
             Console.ReadKey();
@@ -27,9 +36,9 @@ namespace LINQ2
         static void SchoolExamples()
         {
             var studentSchedule = StudentQueryExample(); DisplayStudent("Query", studentSchedule);
-            studentSchedule = MethodExample(); DisplayStudent("Method", studentSchedule);
-            studentSchedule = SelectManyExample(); DisplayStudent("Select Many",studentSchedule);
-            studentSchedule = GroupByExample(); DisplayStudent("Group By",studentSchedule);
+            //studentSchedule = MethodExample(); DisplayStudent("Method", studentSchedule);
+            //studentSchedule = SelectManyExample(); DisplayStudent("Select Many",studentSchedule);
+            //studentSchedule = GroupByExample(); DisplayStudent("Group By",studentSchedule);
             var courseRoster = CourseQueryExample(); DisplayCourse("Course Query", courseRoster);
         }
         static dynamic StudentQueryExample()
@@ -89,7 +98,7 @@ namespace LINQ2
         }
         static dynamic SelectManyExample()
         {
-            //--< Same reesult using SelectMany >--//
+            //--< Same result using SelectMany >--//
             var studentSchedule = students
                     .SelectMany(stu => rosters.Where(r => r.StudentId == stu.StudentId),
                                 (stu, ros) => new { stu, ros })
@@ -112,6 +121,8 @@ namespace LINQ2
         }
         static dynamic GroupByExample()
         {
+            //--< Simple Example >--//
+            var groups = students.GroupBy(stu => stu.Major);    
             /*
                 1. After the joins, each row looks like:
                 {
@@ -272,10 +283,10 @@ namespace LINQ2
         {
             //--< Contains >--//
             int[] customerIds = { 1, 3 };
-            var selectedOrders = from order in salesOrders
+            var selectedOrders = (from order in salesOrders
                                  where customerIds
-                                 .Contains(order.CustomerId)
-                                 select order;
+                                    .Contains(order.CustomerId)
+                                 select order).OrderBy(o => o.CustomerId);
             return selectedOrders;
         }
         #region Sales Displays
