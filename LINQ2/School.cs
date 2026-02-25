@@ -57,6 +57,7 @@ namespace LINQ2
         {
             get
             {
+                Rosters = Roster.Rosters.Where(r => r.StudentId == this.StudentId).ToList();
                 {
                     if (Rosters == null || !Rosters.Any())
                         return 0f;

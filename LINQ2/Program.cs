@@ -19,16 +19,16 @@ namespace LINQ2
         static void Main(string[] args)
         {
             //SchoolExamples();
-            //var gpas = students.GroupBy(s => s.Major);
-            //foreach (var gpa in gpas)
-            //{
-            //    Console.WriteLine($"Major: {gpa.Key}");
-            //    foreach (var student in gpa)
-            //    {
-            //        Console.WriteLine($"\t{student.Name} - GPA: {student.GPA}");
-            //    }
-            //}
-            SalesExamples();
+            var gpas = students.GroupBy(s => s.Major);
+            foreach (var gpa in gpas)
+            {
+                Console.WriteLine($"Major: {gpa.Key}");
+                foreach (var student in gpa)
+                {
+                    Console.WriteLine($"\t{student.Name} - GPA: {student.GPA}");
+                }
+            }
+            //SalesExamples();
 
             Console.ReadKey();
         }
