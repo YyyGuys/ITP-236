@@ -41,6 +41,8 @@ namespace ThinqLinqProject
         ///     Quantites, ExtendedPrices, UnitsShipped and 
         ///     the differences between Quantities and UnitsShipped for the Backorder
         /// </summary>
+   
+        ///List of CustomerItems is the list of items that a Customer has purchased, with the total quantities
         public List<CustomerItem> CustomerItems => 
             SalesOrders
                 .SelectMany(so => so.SalesOrderParts)
@@ -81,7 +83,7 @@ namespace ThinqLinqProject
         /// Amount Sold is the sum of the extended prices for the SalesOrderParts.
         /// </summary>
         public decimal AmountSold => SalesOrderParts.Sum(sop => sop.ExtendedPrice);
-        
+
         #endregion
         /// <summary>
         /// Customers is the list of Customers that have purchased this part from us.
@@ -91,6 +93,7 @@ namespace ThinqLinqProject
         /// Create a List of the Customers.
         /// </summary>
 
+        ///List of Customers is the list of Customers that have purchased this part from us.
         public List<Customer> Customers => 
             SalesOrderParts
                 .Select(sop => sop.SalesOrder.Customer)
@@ -133,6 +136,9 @@ namespace ThinqLinqProject
         #endregion
     }
 
+    /// <summary>
+    /// Represents a component of a sales order, providing calculated pricing and cost information for the part.
+    /// </summary>
     public partial class SalesOrderPart
     {
         public decimal ExtendedPrice => Quantity * UnitPrice;
