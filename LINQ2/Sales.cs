@@ -81,7 +81,7 @@ namespace LINQ2
             get
             {
                 return Customer.Customers
-            .FirstOrDefault(c => c.CustomerId == CustomerId);
+                    .FirstOrDefault(c => c.CustomerId == CustomerId);
             }
             set
             {
