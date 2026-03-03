@@ -1,7 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Collection;
+using LINQ1;
 using System.Numerics;
 Console.WriteLine("LINQ");
+var data = new SalesData();
+var customers = data.Customers;
+var salesOrders = data.SalesOrders;
 int[] sevens = new int[]
             {
                 42, 7, 14, 63, 21, 70, 49, 28, 35, 56
