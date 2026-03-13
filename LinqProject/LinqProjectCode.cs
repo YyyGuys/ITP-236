@@ -9,12 +9,12 @@ namespace ThinqLinqProject
     /* ---- ALL OF YOUR CODE FOR THE THINQ LINQ PROJECT GOES IN THIS FILE ---- */
     public partial class Customer
     {
-        public const string StudentName = "Jonathan Jellen";             //--< START HERE WITH YOUR NAME <<<
+        public const string StudentName = "Put your name here";             //--< START HERE WITH YOUR NAME <<<
 
         /// <summary>
         /// TotalSales is the sum of the SalesOrders' OrderTotal
         /// </summary>
-        public decimal TotalSales => SalesOrders.Sum(so => so.OrderTotal);
+        public decimal TotalSales => 0; 
         /// <summary>
         /// TotalCost is the sum of the SalesOrders' OrderCost
         /// </summary>
@@ -27,12 +27,12 @@ namespace ThinqLinqProject
         /// <summary>
         /// ItemsSold is the sum of the SalesOrders' SalesOrderParts Quantities
         /// </summary>
-        public int ItemsSold => SalesOrders.SelectMany(so => so.SalesOrderParts).Sum(sop => sop.Quantity);
+        public int ItemsSold => 0;
 
         /// <summary>
         /// LargestSale is the largest sale for the Customer based on OrderTotal
         /// </summary>
-        public SalesOrder LargestSale => SalesOrders.OrderByDescending(so => so.OrderTotal).FirstOrDefault() ?? new SalesOrder();
+        public SalesOrder LargestSale => new SalesOrder();
         /// <summary>
         /// Returns a collection (List) of the items that a Customer has purchased, with the total quantities
         /// Group the SalesOrderParts from the SalesOrders. Group by the Part's PartId and Name
@@ -41,22 +41,9 @@ namespace ThinqLinqProject
         ///     Quantites, ExtendedPrices, UnitsShipped and 
         ///     the differences between Quantities and UnitsShipped for the Backorder
         /// </summary>
-   
+
         ///List of CustomerItems is the list of items that a Customer has purchased, with the total quantities
-        public List<CustomerItem> CustomerItems => 
-            SalesOrders
-                .SelectMany(so => so.SalesOrderParts)
-                .GroupBy(sop => new { sop.PartId, sop.Part.Name })
-                .Select(g => new CustomerItem(
-                    CustomerId,
-                    g.Key.PartId,
-                    g.Key.Name,
-                    g.Sum(sop => sop.Quantity),
-                    g.Sum(sop => sop.ExtendedPrice),
-                    g.Sum(sop => sop.UnitsShipped),
-                    g.Sum(sop => sop.Quantity - sop.UnitsShipped)
-                ))
-                .ToList();
+        public List<CustomerItem> CustomerItems => new List<CustomerItem>();
         
     }
 
@@ -66,23 +53,22 @@ namespace ThinqLinqProject
         /// <summary>
         /// QuantityOnHand = Units Received - Units Spoiled - Units Shipped
         /// </summary>
-        public int QuantityOnHand => ReceivedUnits - SpoiledUnits - ShippedUnits; 
+        public int QuantityOnHand => 0;
 
         /// <summary>
         /// UnitsSold is the sum of the sales for the Part. Use SalesOrderParts.
         /// </summary>
-        public int UnitsSold => SalesOrderParts.Sum(sop => sop.Quantity); 
+        public int UnitsSold => 0;
 
         #endregion
         #region Amounts
         /// <summary>
         /// CurrentValue =  Received Value - Spoiled Value -  Shipped Value
         /// </summary>
-        public decimal CurrentValue => ReceivedValue - SpoiledValue - ShippedValue;
-        /// <summary>
+        public decimal CurrentValue => 0;
         /// Amount Sold is the sum of the extended prices for the SalesOrderParts.
         /// </summary>
-        public decimal AmountSold => SalesOrderParts.Sum(sop => sop.ExtendedPrice);
+        public decimal AmountSold => 0;
 
         #endregion
         /// <summary>
@@ -94,11 +80,7 @@ namespace ThinqLinqProject
         /// </summary>
 
         ///List of Customers is the list of Customers that have purchased this part from us.
-        public List<Customer> Customers => 
-            SalesOrderParts
-                .Select(sop => sop.SalesOrder.Customer)
-                .Distinct()
-                .ToList();
+        public List<Customer> Customers => new List<Customer>();
     }
 
     public partial class SalesOrder
@@ -107,31 +89,31 @@ namespace ThinqLinqProject
         /// <summary>
         /// ItemsSold is the sum of the quantities for SalesOrderParts
         /// </summary>
-        public int ItemsSold => SalesOrderParts.Sum(sop => sop.Quantity);
+        public int ItemsSold => 0;
 
         /// <summary>
         /// ItemsShipped is the sum of the SalesOrderParts UnitsShipped Quantities
         /// </summary>
-        public int UnitsShipped => SalesOrderParts.Sum(sop => sop.UnitsShipped);
+        public int UnitsShipped => 0;
         /// <summary>
         /// BackOrdered is the difference between the Items Sold and the Items Shipped
         /// </summary>
-        public int BackOrdered => ItemsSold - UnitsShipped;
+        public int BackOrdered => 0;
         #endregion
 
         #region Amounts
         /// <summary>
         /// OrderTotal is the sum of the SalesOrderParts' Extended Prices
         /// </summary>
-        public decimal OrderTotal => SalesOrderParts.Sum(sop => sop.ExtendedPrice);
+        public decimal OrderTotal => 0;
         /// <summary>
         /// OrderCost is the sum of the SalesOrderPart's Extended Costs
         /// </summary>
-        decimal OrderCost => SalesOrderParts.Sum(sop => sop.ExtendedCost);
+        decimal OrderCost => 0;
         /// <summary>
         /// GrossProfit is the difference between the Order Total and the Order Cost
         /// </summary>
-        decimal GrossProfit => OrderTotal - OrderCost;
+        decimal GrossProfit => 0;
         
         #endregion
     }

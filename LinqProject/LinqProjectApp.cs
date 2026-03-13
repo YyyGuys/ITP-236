@@ -102,7 +102,7 @@ namespace ThinqLinqProject
         }
         static void GetData()
         {
-            XDocument xmlDoc = XDocument.Load("../../LinqProject.xml");
+            XDocument xmlDoc = XDocument.Load("../../../LinqProject.xml");
             customers = GetCustomers(xmlDoc);
             parts = GetParts(xmlDoc);
             salesOrders = GetSalesOrders(xmlDoc);
