@@ -21,7 +21,6 @@ namespace ADO_Net
         static List<Part> parts;
         static List<SalesOrder> salesOrders;
         static List<SalesOrderPart> salesOrderParts;
-        //static string connectionString = "Data Source=dotnet.reynolds.edu;Initial Catalog=ITP236_13;User ID=ITP236_13;Password=!Jsrrjd85200#9138001;Trusted_Connection=False;Encrypt=True;TrustServerCertificate=True;";
         static string connectionString = ConfigurationManager.AppSettings["connectionString"];
         static string xmlData = ConfigurationManager.AppSettings["xmlData"];
         static string xmlNewData = ConfigurationManager.AppSettings["xmlNewData"];
