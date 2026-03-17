@@ -3,9 +3,18 @@ using System.Collections.Generic;
 
 namespace SportsModel
 {
+    /* Use SportsModelRoot for JSON data */
+    public class SportsModelRoot
+    {
+        public SportsModel SportsModel { get; set; }
+    }
+    public class SportsModel
+    {
+        public List<Team> Teams { get; set; }
+    }
     public partial class Team
     {
-        public string MyNameIs => "Your Name Here";     //--< Put Your Name Here <<<
+        public static string MyNameIs => "Your Name Here";     //--< Put Your Name Here <<<
         public Team()
         {
             this.Rosters = new HashSet<Roster>();
