@@ -27,22 +27,22 @@ namespace ADO_Net
         static string jsonData = ConfigurationManager.AppSettings["jsonData"];
         static void Main(string[] args)
         {
-            GetXmlData();
+            //GetXmlData(); 
             //CreateXml();
             //GetJsonData();
-            //AdoNet();
-            //CleanupData();
-            //LoadCustomers();
-            //LoadSalesOrders();
-            //LoadParts();
-            //LoadSalesOrderParts();
-            //ReadCustomers();
+            AdoNet();
+            CleanupData();
+            LoadCustomers();
+            LoadSalesOrders();
+            LoadParts();
+            LoadSalesOrderParts();
+                ReadCustomers();
 
-            var dbCustomers = GetCustomersFromDb();
-            foreach (var cust in dbCustomers)
-            {
-                Console.WriteLine($"{cust.FirstName} {cust.LastName}\thas {cust.SalesOrders.Count} orders");
-            }
+            //var dbCustomers = GetCustomersFromDb();
+            //foreach (var cust in dbCustomers)
+            //{
+                //Console.WriteLine($"{cust.FirstName} {cust.LastName}\thas {cust.SalesOrders.Count} orders");
+            //}
         }
         static List<Customer> GetCustomersFromDb()
         {
@@ -137,6 +137,13 @@ namespace ADO_Net
                 {
                     // Handle exceptions (e.g., connection issues, SQL errors)
                     Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+                finally
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
                 }
             }
         }
@@ -420,12 +427,17 @@ namespace ADO_Net
                         rowsAffected = 0;
                         rowsAffected = command.ExecuteNonQuery();
                         Console.WriteLine($"{rowsAffected} row(s) affected.");
-
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+                finally               {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
                 }
             }
         }
