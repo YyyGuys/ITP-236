@@ -27,9 +27,9 @@ namespace ADO_Net
         static string jsonData = ConfigurationManager.AppSettings["jsonData"];
         static void Main(string[] args)
         {
-            //GetXmlData(); 
-            //CreateXml();
-            //GetJsonData();
+            GetXmlData(); 
+            CreateXml();
+            GetJsonData();
             AdoNet();
             CleanupData();
             LoadCustomers();
@@ -548,12 +548,34 @@ namespace ADO_Net
             parts = GetParts(xmlDoc);
             salesOrders = GetSalesOrders(xmlDoc);
             salesOrderParts = GetSalesOrderParts(xmlDoc);
+            SetNavigation();
+        }
+
+        static void GetJsonData()
+        {
+            string json = File.ReadAllText(jsonData);
+            
+            /* Install package System.Memory */
+            var project = JsonSerializer.Deserialize<ProjectData>(json);
+
+            customers = project.Customers;
+            parts = project.Parts;
+            salesOrders = project.SalesOrders;
+            salesOrderParts = project.SalesOrderParts;
+
+            SetNavigation();
+        }
+        /// <summary>
+        /// Establishes navigation properties and relationships between customers, sales orders, parts, and sales order
+        /// parts.
+        /// </summary>
+        private static void SetNavigation()
+        {
             var salesOrdersLookup = salesOrders.ToLookup(so => so.CustomerId);
             var salesOrderPartsLookup = salesOrderParts.ToLookup(sop => sop.SalesOrderNumber);
             foreach (var customer in customers)
             {
                 customer.SalesOrders = salesOrders.Where(so => so.CustomerId == customer.CustomerId).ToList();
-                //cust.SalesOrders = salesOrdersLookup[cust.CustomerId].ToList();
             }
             foreach (var salesOrder in salesOrders)
             {
@@ -576,50 +598,6 @@ namespace ADO_Net
                 SalesOrders = salesOrders,
                 SalesOrderParts = salesOrderParts
             };
-        }
-
-        static void GetJsonData()
-        {
-            string json = File.ReadAllText(jsonData);
-            
-            /* Install package System.Memory */
-            var project = JsonSerializer.Deserialize<ProjectData>(json);
-
-            customers = project.Customers;
-            parts = project.Parts;
-            salesOrders = project.SalesOrders;
-            salesOrderParts = project.SalesOrderParts;
-
-            // Rebuild relationships (same as XML version)
-            foreach (var customer in customers)
-            {
-                customer.SalesOrders = salesOrders
-                    .Where(so => so.CustomerId == customer.CustomerId)
-                    .ToList();
-            }
-
-            foreach (var order in salesOrders)
-            {
-                order.SalesOrderParts = salesOrderParts
-                    .Where(sop => sop.SalesOrderNumber == order.SalesOrderNumber)
-                    .ToList();
-
-                order.Customer = customers
-                    .First(c => c.CustomerId == order.CustomerId);
-            }
-
-            foreach (var part in parts)
-            {
-                part.SalesOrderParts = salesOrderParts
-                    .Where(sop => sop.PartId == part.PartId)
-                    .ToList();
-            }
-
-            foreach (var sop in salesOrderParts)
-            {
-                sop.Part = parts.First(p => p.PartId == sop.PartId);
-                sop.SalesOrder = salesOrders.First(so => so.SalesOrderNumber == sop.SalesOrderNumber);
-            }
         }
     }
 }
