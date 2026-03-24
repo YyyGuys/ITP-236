@@ -1,0 +1,5 @@
+﻿DROP TABLE IF EXISTS School.Enrollment;
+DROP TABLE IF EXISTS School.Student;
+DROP TABLE IF EXISTS School.Course;
+DROP TABLE IF EXISTS dbo.__EFMigrationsHistory;
+DROP SCHEMA IF EXISTS School;
