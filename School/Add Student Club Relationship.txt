@@ -1,0 +1,96 @@
+﻿ protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Student_Club_ClubId",
+                schema: "School",
+                table: "Student");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Student_ClubId",
+                schema: "School",
+                table: "Student");
+
+            migrationBuilder.DropColumn(
+                name: "ClubId",
+                schema: "School",
+                table: "Student");
+
+            migrationBuilder.CreateTable(
+                name: "ClubStudent",
+                schema: "School",
+                columns: table => new
+                {
+                    ClubsClubId = table.Column<int>(type: "int", nullable: false),
+                    MembersStudentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClubStudent", x => new { x.ClubsClubId, x.MembersStudentId });
+                    table.ForeignKey(
+                        name: "FK_ClubStudent_Club_ClubsClubId",
+                        column: x => x.ClubsClubId,
+                        principalSchema: "School",
+                        principalTable: "Club",
+                        principalColumn: "ClubId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClubStudent_Student_MembersStudentId",
+                        column: x => x.MembersStudentId,
+                        principalSchema: "School",
+                        principalTable: "Student",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClubStudent_MembersStudentId",
+                schema: "School",
+                table: "ClubStudent",
+                column: "MembersStudentId");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "ClubStudent",
+                schema: "School");
+
+            migrationBuilder.AddColumn<int>(
+                name: "ClubId",
+                schema: "School",
+                table: "Student",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.UpdateData(
+                schema: "School",
+                table: "Student",
+                keyColumn: "StudentId",
+                keyValue: 101,
+                column: "ClubId",
+                value: null);
+
+            migrationBuilder.UpdateData(
+                schema: "School",
+                table: "Student",
+                keyColumn: "StudentId",
+                keyValue: 102,
+                column: "ClubId",
+                value: null);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Student_ClubId",
+                schema: "School",
+                table: "Student",
+                column: "ClubId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Student_Club_ClubId",
+                schema: "School",
+                table: "Student",
+                column: "ClubId",
+                principalSchema: "School",
+                principalTable: "Club",
+                principalColumn: "ClubId");
+        }

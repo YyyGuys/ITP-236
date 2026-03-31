@@ -1,0 +1,41 @@
+﻿ public partial class AssignTeacherAndClub : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.UpdateData(
+                schema: "School",
+                table: "Course",
+                keyColumn: "CourseId",
+                keyValue: 201,   // your actual CourseId
+                column: "TeacherId",
+                value: 101       // your actual TeacherId
+            );
+            migrationBuilder.InsertData(
+                schema: "School",
+                table: "ClubStudent",   // replace with your actual join table name
+                columns: new[] { "MembersStudentId", "ClubsClubId" },  // replace with actual column names
+                values: new object[] { 101, 101 }   // Student 101 joins Club 1
+            );
+
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.UpdateData(
+                schema: "School",
+                table: "Course",
+                keyColumn: "CourseId",
+                keyValue: 201,
+                column: "TeacherId",
+                value: null
+            );
+            migrationBuilder.DeleteData(
+                schema: "School",
+                table: "ClubStudent",
+                keyColumns: new[] { "MembersStudentId", "ClubsClubId" },
+                keyValues: new object[] { 101, 101 }
+            );
+        }
+    }

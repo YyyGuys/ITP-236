@@ -1,4 +1,8 @@
-﻿/*
+﻿#define Part1    // Initial Creation
+//#define Part2    // Add Email & PhoneNumber to Student
+//#define Part3    // Add Teacher as 1:M with Course. Add Grade to Enrollment
+//#define Part4    // Add Club as M:M with Student
+/*
     Install the following libraries. Use Version 8.0.0 (not latest):
 • 	Microsoft.EntityFrameworkCare
 • 	Microsoft.EntityFrameworkCore.SqlServer
@@ -8,15 +12,18 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Emit;
+
 
 
 namespace SchoolModel
 {
     public class SchoolContext : DbContext
     {
-        private readonly ILoggerFactory _loggerFactory;
+        // Change the declaration of _loggerFactory to nullable to resolve CS8618
+        private readonly ILoggerFactory? _loggerFactory;
 
         public SchoolContext(DbContextOptions<SchoolContext> options)
             : base(options) { }
@@ -24,6 +31,12 @@ namespace SchoolModel
         public DbSet<Student> Students => Set<Student>();
         public DbSet<Course> Courses => Set<Course>();
         public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+#if Part3
+        public DbSet<Teacher> Teachers { get; set; }
+#endif
+#if Part4
+        public DbSet<Club> Clubs { get; set; }
+#endif 
 
         public SchoolContext(DbContextOptions<SchoolContext> options, ILoggerFactory loggerFactory)
         : base(options)
@@ -38,7 +51,12 @@ namespace SchoolModel
         }
 
 
-
+        // <---- Cascade Delete ----> //
+        /*
+            In EF Core, many‑to‑many join tables are dependent-only entities.
+            Dependent entities get cascade delete by default.
+            So yes — deleting a parent automatically cleans up the join rows.
+        */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("School");
@@ -65,9 +83,29 @@ namespace SchoolModel
                 - not known ahead of time
                 - not guaranteed to be the same on every machine
             */
-            modelBuilder.Entity<Student>().HasData(
-                new Student { StudentId = 101, FirstName = "Ada", LastName = "Lovelace", Major = "Math" },
-                new Student { StudentId = 102, FirstName = "Grace", LastName = "Hopper", Major = "ITP" }
+        modelBuilder.Entity<Student>().HasData(
+                new Student
+                {
+                    StudentId = 101
+                    ,FirstName = "Ada"
+                    ,LastName = "Lovelace"
+                    ,Major = "Math"
+#if Part2
+                    ,Email = "ALovelace@reynolds.edu"       //--< Add Email to Seed Data <<<
+                    ,PhoneNumber = "804-345-6789"
+#endif
+                },       
+                new Student
+                {
+                    StudentId = 102
+                    ,FirstName = "Grace"
+                    ,LastName = "Hopper"
+                    ,Major = "ITP"
+#if Part2
+                    ,Email = "GHopper@reynolds.edu"          //--< Add Email to Seed Data <<<
+                    ,PhoneNumber = "804-987-6543"
+#endif
+                }       //--< Add Email to Seed Data <<<
             );
 
             modelBuilder.Entity<Course>().HasData(
@@ -79,7 +117,16 @@ namespace SchoolModel
                 new Enrollment { EnrollmentId = 301, StudentId = 101, CourseId = 201 },
                 new Enrollment { EnrollmentId = 302, StudentId = 102, CourseId = 202 }
             );
-
+#if Part3
+            modelBuilder.Entity<Teacher>().HasData(
+                new Teacher { TeacherId = 101, FullName = "Bob Dust" }
+            );
+#endif
+#if Part4
+            modelBuilder.Entity<Club>().HasData(
+                new Club { ClubId = 101, Name = "STEM" }
+            );
+#endif
         }
     }
 
@@ -93,11 +140,37 @@ namespace SchoolModel
         public required string LastName { get; set; }
 
         public string? Major { get; set; }
+#if Part2
+        /// <summary>
+        /// Gets or sets the email address. This is added AFTER the initial build
+        /// </summary>
+        public string? Email { get; set; }
+
+        [MaxLength(15)]
+        /// <summary>
+        /// Gets or sets the phone number associated with the entity. This too is added AFTER the initial build.
+        /// Migration looks like this afterwards:
+        ///  migrationBuilder.AddColumn<string>(
+        ///  name: "PhoneNumber",
+        ///        schema: "School",
+        ///        table: "Student",
+        ///        type: "nvarchar(15)",
+        ///        nullable: true,
+        ///        defaultValue: "");
+        /// </summary>
+        public string? PhoneNumber { get; set; }
+#endif
         /// <summary>
         /// Gets or sets the collection of enrollments associated with the Student.
         /// A Student can have Many Enrollments--Can be enrolled in many courses
         /// </summary>
         public List<Enrollment> Enrollments { get; set; } = new();
+#if Part4
+        /// <summary>
+        /// Gets or sets the collection of clubs that a Student belongs to.  Added new AFTER the initial build.
+        /// </summary>
+        public List<Club> Clubs { get; set; } = new();
+#endif
         /// <summary>
         /// Uses LINQ to get the full name, consisting of the first name followed by the last name.
         /// </summary>
@@ -111,6 +184,16 @@ namespace SchoolModel
 
         public required string Tag { get; set; }
         public required string Title { get; set; }
+#if Part3
+        /// <summary>
+        /// Gets or sets the unique identifier of the teacher. Added AFTER the initial build. This is a new 1:M relationship
+        /// </summary>
+        public int? TeacherId { get; set; }
+        /// <summary>
+        /// Teacher for the course. Added AFTER the initial build
+        /// </summary>
+        public Teacher? Teacher { get; set; }
+#endif
 
         public int Credits { get; set; }
         /// <summary>
@@ -127,14 +210,51 @@ namespace SchoolModel
     public class Enrollment
     {
         public int EnrollmentId { get; set; }
+
+        public int StudentId { get; set; }
+        public Student Student { get; set; } = null!;
+
+
+        public int CourseId { get; set; }
+        public Course Course { get; set; } = null!;
+
+#if Part3
         public string? Grade { get; set; }
 
-        // Foreign Keys
-        public int StudentId { get; set; }
-        public int CourseId { get; set; }
-
-        // Navigation Properties
-        public Student Student { get; set; } = null!;
-        public Course Course { get; set; } = null!;
+        public double? GradePoints =>
+            Grade switch
+            {
+                "A" => 4.0,
+                "B" => 3.0,
+                "C" => 2.0,
+                "D" => 1.0,
+                "F" => 0.0,
+                _ => null
+            };
+#endif
     }
+#if Part3
+    /// <summary>
+    /// Represents a teacher with an identifier, full name, and associated courses. Teacher : Course = 1:M Relationship
+    /// </summary>
+    [Table("Teacher")]
+    public class Teacher
+    {
+        public int TeacherId { get; set; }
+        [Required]
+        public string FullName { get; set; } = string.Empty;
+
+        public List<Course> Courses { get; set; } = new();
+    }
+#endif
+#if Part4
+    [Table("Club")]
+    public class Club
+    {
+        public int ClubId { get; set; }
+        public string Name { get; set; } = string.Empty;
+
+        public List<Student> Members { get; set; } = new();
+    }
+#endif
 }

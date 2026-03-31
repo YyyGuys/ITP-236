@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿//#define Logging
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -18,8 +19,9 @@ public class SchoolContextFactory : IDesignTimeDbContextFactory<SchoolContext>
 
         var optionsBuilder = new DbContextOptionsBuilder<SchoolContext>();
         optionsBuilder.UseSqlServer(connectionString);
-
+#if Logging
         // Add logging
+        // ILoggerFactory? loggerFactory = null;
         var loggerFactory = LoggerFactory.Create(builder =>
         {
             builder
@@ -37,7 +39,9 @@ public class SchoolContextFactory : IDesignTimeDbContextFactory<SchoolContext>
                     options.TimestampFormat = "hh:mm:ss ";
                 });
         });
-
         return new SchoolContext(optionsBuilder.Options, loggerFactory);
+#else 
+        return new SchoolContext(optionsBuilder.Options);
+#endif
     }
 }
