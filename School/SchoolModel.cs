@@ -1,7 +1,11 @@
 ﻿#define Part1    // Initial Creation
-//#define Part2    // Add Email & PhoneNumber to Student
-//#define Part3    // Add Teacher as 1:M with Course. Add Grade to Enrollment
-//#define Part4    // Add Club as M:M with Student
+#define Part2    // Add Email & PhoneNumber to Student
+#define Part3    // Add Teacher as 1:M with Course. Add Grade to Enrollment
+#define Part4    // Add Club as M:M with Student
+// Do not define BOTH Part5, Part6, and Part7. Each is Exclusive of the others //
+//#define Part5    // Unit Testing GPA 0
+//#define Part6    // Unit Testing GPA Null
+#define Part7
 /*
     Install the following libraries. Use Version 8.0.0 (not latest):
 • 	Microsoft.EntityFrameworkCare
@@ -83,30 +87,40 @@ namespace SchoolModel
                 - not known ahead of time
                 - not guaranteed to be the same on every machine
             */
-        modelBuilder.Entity<Student>().HasData(
-                new Student
-                {
-                    StudentId = 101
-                    ,FirstName = "Ada"
-                    ,LastName = "Lovelace"
-                    ,Major = "Math"
+            modelBuilder.Entity<Student>().HasData(
+                    new Student
+                    {
+                        StudentId = 101
+                        ,
+                        FirstName = "Ada"
+                        ,
+                        LastName = "Lovelace"
+                        ,
+                        Major = "Math"
 #if Part2
-                    ,Email = "ALovelace@reynolds.edu"       //--< Add Email to Seed Data <<<
-                    ,PhoneNumber = "804-345-6789"
+                        ,
+                        Email = "ALovelace@reynolds.edu"       //--< Add Email to Seed Data <<<
+                        ,
+                        PhoneNumber = "804-345-6789"
 #endif
-                },       
-                new Student
-                {
-                    StudentId = 102
-                    ,FirstName = "Grace"
-                    ,LastName = "Hopper"
-                    ,Major = "ITP"
+                    },
+                    new Student
+                    {
+                        StudentId = 102
+                        ,
+                        FirstName = "Grace"
+                        ,
+                        LastName = "Hopper"
+                        ,
+                        Major = "ITP"
 #if Part2
-                    ,Email = "GHopper@reynolds.edu"          //--< Add Email to Seed Data <<<
-                    ,PhoneNumber = "804-987-6543"
+                        ,
+                        Email = "GHopper@reynolds.edu"          //--< Add Email to Seed Data <<<
+                        ,
+                        PhoneNumber = "804-987-6543"
 #endif
-                }       //--< Add Email to Seed Data <<<
-            );
+                    }       //--< Add Email to Seed Data <<<
+                );
 
             modelBuilder.Entity<Course>().HasData(
                 new Course { CourseId = 201, Tag = "ISP-136", Title = "Introduction to C#", Credits = 4 },
@@ -170,6 +184,57 @@ namespace SchoolModel
         /// Gets or sets the collection of clubs that a Student belongs to.  Added new AFTER the initial build.
         /// </summary>
         public List<Club> Clubs { get; set; } = new();
+#endif
+#if Part5
+        [NotMapped]             //--< Does not store this in the DB <<<
+        public double? GPA =>
+            Enrollments
+                .Where(e => e.GradePoints.HasValue)
+                .Select(e => e.GradePoints!.Value)
+                .DefaultIfEmpty()
+                .Average();
+#endif
+#if Part6
+        [NotMapped]             //--< Does not store this in the DB <<<
+        public double? GPA
+        {
+            get
+            {
+                var gradePoints = Enrollments
+                    .Where(e => e.GradePoints.HasValue)
+                    .Select(e => e.GradePoints!.Value)
+                    .ToList();
+
+                return gradePoints.Count == 0
+                    ? null
+                    : gradePoints.Average();
+            }
+        }
+#endif
+#if Part7
+[NotMapped]
+public double? GPA
+{
+    get
+    {
+        var graded = Enrollments
+            .Where(e => e.GradePoints.HasValue && e.Course != null)
+            .Select(e => new
+            {
+                Points = e.GradePoints!.Value,
+                Credits = e.Course.Credits
+            })
+            .ToList();
+
+        if (graded.Count == 0)
+            return null;
+
+        double totalPoints = graded.Sum(g => g.Points * g.Credits);
+        double totalCredits = graded.Sum(g => g.Credits);
+
+        return totalPoints / totalCredits;
+    }
+}
 #endif
         /// <summary>
         /// Uses LINQ to get the full name, consisting of the first name followed by the last name.

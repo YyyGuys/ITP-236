@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Add Grade to Enrollment.txt" />
+    <None Remove="Add SchoolContextModelSnapshot.txt" />
+    <None Remove="Add Student Club Relationship.txt" />
+    <None Remove="Add Teacher and Club.txt" />
+    <None Remove="Assign Teacher and Club.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
