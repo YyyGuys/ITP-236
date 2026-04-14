@@ -143,7 +143,7 @@ while (true)
                 db.SaveChanges();       //--< Insert enrollment <<<
                 break;
 
-            case "updates":
+            case "updates": 
                 student = db.Students
                     //.AsNoTracking()                       //--< Turn this off because we will update <<<
                     .OrderBy(s => s.StudentId).Last();      //--< Update the last Student inserted <<<

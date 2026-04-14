@@ -11,7 +11,7 @@
 • 	Microsoft.EntityFrameworkCare
 • 	Microsoft.EntityFrameworkCore.SqlServer
 • 	Microsoft.EntityFrameworkCore.Tools
-    These allow migrations to run and SQL Server to be used.
+    These allow migrations to run and SQL Server to be used.  
 */
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

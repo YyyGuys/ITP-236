@@ -4,9 +4,9 @@
 //#define Test4
 using Microsoft.EntityFrameworkCore;
 
-namespace SchoolModel.Tests;
+namespace SchoolModel.Tests; 
 
-public class StudentGpaTests
+public class StudentGpaTests 
 {
     private SchoolContext GetContext(string dbName)
     {
