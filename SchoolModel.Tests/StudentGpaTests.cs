@@ -1,7 +1,7 @@
 ﻿#define Test1
-#define Test2
-#define Test3
-#define Test4
+//#define Test2
+//#define Test3
+//#define Test4
 using Microsoft.EntityFrameworkCore;
 
 namespace SchoolModel.Tests;
@@ -20,7 +20,12 @@ public class StudentGpaTests
     [Fact]
     public void GPA_ReturnsCorrectAverage()
     {
-        // Arrange
+        /*
+         *  Arrange
+         *  Act
+         *  Assert
+        */
+        //<----- Arrange: Set up data and objects ----->//
         using var context = GetContext("GpaTestDB");
 
         var student = new Student
@@ -39,13 +44,13 @@ public class StudentGpaTests
 
         context.SaveChanges();
 
-        // Act
+        //<----- Act: Call the method being tested ----->//
         var result = context.Students
             .Include(s => s.Enrollments)
             .First(s => s.StudentId == 1)
             .GPA;
 
-        // Assert
+        //<----- Assert: Verify the result is what you expect ----->//
         Assert.Equal(3.5, result);
     }
 #endif 

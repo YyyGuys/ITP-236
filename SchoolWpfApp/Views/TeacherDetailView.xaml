@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="SchoolWpfApp.Views.TeacherDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Margin="20">
+
+        <!-- Form Grid -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Teacher:" Margin="0 0 10 10" />
+            <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding Teacher.FullName}"
+                 FontSize="20"
+                 FontWeight="Bold"
+                 Margin="0 0 0 10" />
+            <TextBlock Grid.Row="1" Text="Courses:" Margin="0 0 10 10" />
+        </Grid>
+
+        <!-- Courses List -->
+        <DataGrid ItemsSource="{Binding Courses}"
+              AutoGenerateColumns="False"
+              HeadersVisibility="Column"
+              CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tag" Binding="{Binding Tag}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Credits" Binding="{Binding Credits}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Buttons -->
+        <Button Content="Save"
+            Command="{Binding SaveCommand}"
+            Margin="0,20,0,0" />
+
+        <Button Content="Back"
+            Command="{Binding BackCommand}" />
+
+    </StackPanel>
+</UserControl>

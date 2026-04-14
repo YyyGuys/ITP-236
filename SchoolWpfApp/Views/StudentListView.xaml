@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="SchoolWpfApp.Views.StudentListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="10">
+        <TextBlock Text="Students"
+           FontSize="24"
+           FontWeight="Bold"
+           Margin="0 0 0 10" />
+        <DataGrid ItemsSource="{Binding Students}"
+                  SelectedItem="{Binding SelectedStudent}"
+                  CanUserAddRows="False" 
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding FullName}" />
+                <DataGridTextColumn Header="Major" Binding="{Binding Major}" />
+                <DataGridTextColumn Header="GPA"
+                    Binding="{Binding GPA, StringFormat={}{0:F2}}" />
+                <DataGridTextColumn Header="Courses" Binding="{Binding EnrollmentCount}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="View Details"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="DarkSlateBlue" Foreground="White"
+                Margin="10,10,0,4"
+                Width="120" Height="22" 
+                FontSize="14" FontWeight="Bold"
+                Command="{Binding ViewDetailCommand}"
+                CommandParameter="{Binding SelectedStudent}"/>
+    </Grid>
+</UserControl>

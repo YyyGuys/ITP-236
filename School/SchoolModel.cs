@@ -2,10 +2,10 @@
 #define Part2    // Add Email & PhoneNumber to Student
 #define Part3    // Add Teacher as 1:M with Course. Add Grade to Enrollment
 #define Part4    // Add Club as M:M with Student
-// Do not define BOTH Part5, Part6, and Part7. Each is Exclusive of the others //
-//#define Part5    // Unit Testing GPA 0
+// Do not define ALL of Part5, Part6, and Part7. Each is Exclusive of the others //
+#define Part5    // Unit Testing GPA 0
 //#define Part6    // Unit Testing GPA Null
-#define Part7
+//#define Part7    // Unit Testing for Weighted GPA
 /*
     Install the following libraries. Use Version 8.0.0 (not latest):
 • 	Microsoft.EntityFrameworkCare
@@ -235,6 +235,8 @@ public double? GPA
         return totalPoints / totalCredits;
     }
 }
+        [NotMapped]
+        public int EnrollmentCount => Enrollments.Count;
 #endif
         /// <summary>
         /// Uses LINQ to get the full name, consisting of the first name followed by the last name.
@@ -266,6 +268,8 @@ public double? GPA
         /// A Course can have Many Enrollments--Can have many Students enrolled in the course.
         /// </summary>
         public List<Enrollment> Enrollments { get; set; } = new();
+        [NotMapped]
+        public int EnrollmentCount => Enrollments.Count;
     }
     /// <summary>
     /// Represents one student's enrollment in one course, including grade and related entities.

@@ -1,0 +1,38 @@
+﻿<Window x:Class="SchoolWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="School App" Height="450" Width="800">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Navigation Panel -->
+        <StackPanel Background="#DEE" >
+            <TextBlock Text="School Menu" FontSize="22" FontWeight="Bold" Margin="10 10 0 20" />
+
+            <Button Content="Students"
+                    Command="{Binding ShowStudentsCommand}"
+                    Margin="0 5" Height="35" />
+
+            <Button Content="Courses"
+                    Command="{Binding ShowCoursesCommand}"
+                    Margin="0 5" Height="35" />
+            
+            <Button Content="Teachers"
+                    Command="{Binding ShowTeachersCommand}"
+                    Margin="0 5" Height="35" />
+
+            <!-- Future buttons -->
+            <Button Content="Clubs"
+                    Margin="0 5" Height="35" IsEnabled="False" />
+        </StackPanel>
+
+        <!-- Main Content Area -->
+        <ContentControl Grid.Column="1"
+                        Content="{Binding CurrentView}"
+                        Margin="10" />
+    </Grid>
+</Window>

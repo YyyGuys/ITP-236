@@ -1,0 +1,32 @@
+﻿<Application x:Class="SchoolWpfApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:SchoolWpfApp.ViewModels"
+             xmlns:v="clr-namespace:SchoolWpfApp.Views"
+             StartupUri="MainWindow.xaml">
+
+    <Application.Resources>
+        <DataTemplate DataType="{x:Type vm:StudentListViewModel}">
+            <v:StudentListView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StudentDetailViewModel}">
+            <v:StudentDetailView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:CourseListViewModel}">
+            <v:CourseListView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CourseDetailViewModel}">
+            <v:CourseDetailView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:TeacherListViewModel}">
+            <v:TeacherListView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TeacherDetailViewModel}">
+            <v:TeacherDetailView />
+        </DataTemplate>
+
+    </Application.Resources>
+
+</Application>
