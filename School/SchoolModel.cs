@@ -96,7 +96,7 @@ namespace SchoolModel
                         ,
                         LastName = "Lovelace"
                         ,
-                        Major = "Math"
+                        Major = "Mathematics"
 #if Part2
                         ,
                         Email = "ALovelace@reynolds.edu"       //--< Add Email to Seed Data <<<
