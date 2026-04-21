@@ -3,9 +3,9 @@
 #define Part3    // Add Teacher as 1:M with Course. Add Grade to Enrollment
 #define Part4    // Add Club as M:M with Student
 // Do not define ALL of Part5, Part6, and Part7. Each is Exclusive of the others //
-#define Part5    // Unit Testing GPA 0
+//#define Part5    // Unit Testing GPA 0
 //#define Part6    // Unit Testing GPA Null
-//#define Part7    // Unit Testing for Weighted GPA
+#define Part7    // Unit Testing for Weighted GPA
 /*
     Install the following libraries. Use Version 8.0.0 (not latest):
 • 	Microsoft.EntityFrameworkCare
