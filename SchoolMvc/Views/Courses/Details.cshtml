@@ -1,0 +1,68 @@
+﻿@model SchoolModel.Course
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<h1>@Model.Tag</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+
+        <h3>@Model.Tag — @Model.Title</h3>
+
+        <dl class="row mt-3">
+            <dt class="col-sm-3">Course ID</dt>
+            <dd class="col-sm-9">@Model.CourseId</dd>
+
+            <dt class="col-sm-3">Credits</dt>
+            <dd class="col-sm-9">@Model.Credits</dd>
+
+            <dt class="col-sm-3">Teacher</dt>
+            <dd class="col-sm-9">
+                @(Model.Teacher != null ? Model.Teacher.FullName : "Unassigned")
+            </dd>
+
+            <dt class="col-sm-3">Enrollment Count</dt>
+            <dd class="col-sm-9">@Model.EnrollmentCount</dd>
+        </dl>
+
+    </div>
+</div>
+
+<h3>Students Enrolled</h3>
+
+@if (Model.Enrollments == null || !Model.Enrollments.Any())
+{
+    <p>No students are currently enrolled in this course.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Major</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Enrollments)
+            {
+                <tr>
+                    <td>@e.Student.StudentId</td>
+                    <td>@e.Student.FullName</td>
+                    <td>@e.Student.Major</td>
+
+                    <td>@(e.Grade ?? "")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.CourseId" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

@@ -1,0 +1,75 @@
+﻿@model SchoolModel.Student
+
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<h1>Student Details</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+
+        <h3>@Model.FullName</h3>
+
+        <dl class="row mt-3">
+            <dt class="col-sm-3">Student ID</dt>
+            <dd class="col-sm-9">@Model.StudentId</dd>
+
+            <dt class="col-sm-3">Major</dt>
+            <dd class="col-sm-9">@Model.Major</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Phone</dt>
+            <dd class="col-sm-9">@Model.PhoneNumber</dd>
+            <dt class="col-sm-3">GPA</dt>
+            <dd class="col-sm-9">
+                @(Model.GPA.HasValue? Model.GPA.Value.ToString("0.00") : "N/A")
+            </dd>
+
+            <dt class="col-sm-3">Enrollment Count</dt>
+            <dd class="col-sm-9">@Model.EnrollmentCount</dd>
+        </dl>
+
+    </div>
+</div>
+
+<h3>Enrollments</h3>
+
+@if (Model.Enrollments == null || !Model.Enrollments.Any())
+{
+    <p>This student is not enrolled in any courses.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Course Tag</th>
+                <th>Course Title</th>
+                <th>Credits</th>
+                <th>Grade</th>
+                <th>Grade Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Enrollments)
+            {
+                <tr>
+                    <td>@e.Course.Tag</td>
+                    <td>@e.Course.Title</td>
+                    <td>@e.Course.Credits</td>
+
+                    <td>@(e.Grade ?? "N/A")</td>
+                    <td>@(e.GradePoints?.ToString("0.0") ?? "N/A")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.StudentId" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

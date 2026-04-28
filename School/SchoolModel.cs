@@ -28,9 +28,14 @@ namespace SchoolModel
     {
         // Change the declaration of _loggerFactory to nullable to resolve CS8618
         private readonly ILoggerFactory? _loggerFactory;
+        private static readonly ILoggerFactory DefaultLoggerFactory =
+            LoggerFactory.Create(builder => builder.AddConsole());
 
-        public SchoolContext(DbContextOptions<SchoolContext> options)
-            : base(options) { }
+        public SchoolContext(DbContextOptions<SchoolContext> options) : base(options)
+        {
+            _loggerFactory = DefaultLoggerFactory;
+        }
+
 
         public DbSet<Student> Students => Set<Student>();
         public DbSet<Course> Courses => Set<Course>();
@@ -42,11 +47,11 @@ namespace SchoolModel
         public DbSet<Club> Clubs { get; set; }
 #endif 
 
-        public SchoolContext(DbContextOptions<SchoolContext> options, ILoggerFactory loggerFactory)
-        : base(options)
-        {
-            _loggerFactory = loggerFactory;
-        }
+        //public SchoolContext(DbContextOptions<SchoolContext> options, ILoggerFactory loggerFactory)
+        //: base(options)
+        //{
+        //    _loggerFactory = loggerFactory;
+        //}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
